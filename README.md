@@ -206,60 +206,90 @@ The code for making predictions on my final model is located in the tenth cell o
 For the first image, the model incorrectly classifies it as "speed limit (50km/h)". As evidenced by the top 5 scores, the model has difficulties distinguishing between different speed limits signs, as expected. I believe this is solvable with more training data.
 
 Image 0. Correct value: Speed limit (120km/h)
-Speed limit (50km/h): 0.487
-Speed limit (30km/h): 0.274
-Speed limit (100km/h): 0.071
-Speed limit (70km/h): 0.054
-Speed limit (80km/h): 0.024
+
+| Predicted Value | Confidence |
+|------------------|-------------------|
+|Speed limit (50km/h)| 0.487|
+|Speed limit (30km/h)| 0.274|
+|Speed limit (100km/h)| 0.071|
+|Speed limit (70km/h)| 0.054|
+|Speed limit (80km/h)| 0.024|
 
 The other 4 signs are correctly classified. Interestingly, the "no vehicles", "yield" and "no passing" signs have extremely high confidence. This is presumably because they have distinctive features like a different shape, or a horizontal line through the sign, or an empty white circle. The 30 speed limit sign is correctly classified but not quite as confidently as the others, showing that the model does indeed struggle with speed limits.
 
-Image 1. Correct value: No vehicles
-No vehicles: 1.000
-Bumpy road: 0.000
-Bicycles crossing: 0.000
-Yield: 0.000
-Speed limit (60km/h): 0.000
+
+
+|Image 1. Correct value: No vehicles
+
+| Predicted Value | Confidence |
+|------------------|-------------------|
+|No vehicles| 1.000|
+|Bumpy road| 0.000|
+|Bicycles crossing| 0.000|
+|Yield| 0.000|
+|Speed limit (60km/h)| 0.000|
 
 Image 2. Correct value: Yield
-Yield: 1.000
-Speed limit (20km/h): 0.000
-Speed limit (30km/h): 0.000
-Speed limit (50km/h): 0.000
-Speed limit (60km/h): 0.000
+
+| Predicted Value | Confidence |
+|------------------|-------------------|
+|Yield| 1.000|
+|Speed limit (20km/h)| 0.000|
+|Speed limit (30km/h)| 0.000|
+|Speed limit (50km/h)| 0.000|
+|Speed limit (60km/h)| 0.000|
 
 Image 3. Correct value: No passing
-No passing: 1.000
-Speed limit (20km/h): 0.000
-Speed limit (30km/h): 0.000
-Speed limit (50km/h): 0.000
-Speed limit (60km/h): 0.000
+
+| Predicted Value | Confidence |
+|------------------|-------------------|
+|No passing| 1.000|
+|Speed limit (20km/h)| 0.000|
+|Speed limit (30km/h)| 0.000|
+|Speed limit (50km/h)| 0.000|
+|Speed limit (60km/h)| 0.000|
 
 Image 4. Correct value: Speed limit (30km/h)
-Speed limit (30km/h): 0.968
-Speed limit (50km/h): 0.024
-Speed limit (70km/h): 0.007
-Speed limit (100km/h): 0.000
-No vehicles: 0.000
+
+| Predicted Value | Confidence |
+|------------------|-------------------|
+|Speed limit (30km/h)| 0.968|
+|Speed limit (50km/h)| 0.024|
+|Speed limit (70km/h)| 0.007|
+|Speed limit (100km/h)| 0.000|
+|No vehicles| 0.000|
+
+The three "unseen" additions are interesting. The first one is a "no parking" with an arrow in the sign. 4 of the 5 suggested results have arrows somewhere on the sign. The third unseend image is also a "no parking" sign, but with no arrow. In this case, the model is very confused and guesses a stop sign. If I had to hazard a guess I would say it's the angular straight lines that have caused the confusion. 
 
 Image 5. Correct value: unseen
-Keep right: 0.567
-Turn left ahead: 0.145
-Ahead only: 0.085
-Right-of-way at the next intersection: 0.044
-Road work: 0.030
------
-Image 6. Correct value: unseen
-End of speed limit (80km/h): 1.000
-Dangerous curve to the right: 0.000
-Slippery road: 0.000
-Children crossing: 0.000
-Speed limit (60km/h): 0.000
------
+
+| Predicted Value | Confidence |
+|------------------|-------------------|
+|Keep right| 0.567|
+|Turn left ahead| 0.145|
+|Ahead only| 0.085|
+|Right-of-way at the next intersection| 0.044|
+|Road work| 0.030|
+
 Image 7. Correct value: unseen
-Stop: 0.998
-Speed limit (30km/h): 0.001
-No vehicles: 0.001
-Speed limit (50km/h): 0.000
-No passing: 0.000
------
+
+| Predicted Value | Confidence |
+|------------------|-------------------|
+|Stop| 0.998|
+|Speed limit (30km/h)| 0.001|
+|No vehicles| 0.001|
+|Speed limit (50km/h)| 0.000|
+|No passing| 0.000|
+
+The second "unseen" image is of an end of speed limit (100 km/h). The model is extremely confident that this is an end of speed limit but gets the number wrong. This is clearly caused by the lack of 100km/h ends of speed limits in the training set. It is gratifying to see the model performing so well, though!
+
+Image 6. Correct value: unseen
+
+| Predicted Value | Confidence |
+|------------------|-------------------|
+|End of speed limit (80km/h)| 1.000|
+|Dangerous curve to the right| 0.000|
+|Slippery road| 0.000|
+|Children crossing| 0.000|
+|Speed limit (60km/h)| 0.000|
+
