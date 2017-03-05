@@ -20,6 +20,14 @@ The goals / steps of this project are the following:
 [no_passing]: ./images/no_passing.png "no passing"
 [stop]: ./images/stop.png "stop"
 [speed_80]: ./images/speed_80.png "speed_80"
+[german1]: ./images/german1.jpg "german1"
+[german2]: ./images/german2.jpg "german2"
+[german3]: ./images/german3.jpg "german3"
+[german4]: ./images/german4.jpg "german4"
+[german5]: ./images/german5.jpg "german5"
+[german6]: ./images/german6.jpg "german6"
+[german7]: ./images/german7.jpg "german7"
+[german8]: ./images/german8.jpg "german8"
 
 
 [image2]: ./examples/grayscale.jpg "Grayscaling"
