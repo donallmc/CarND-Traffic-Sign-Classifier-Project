@@ -101,57 +101,62 @@ The fifth code cell of the IPython notebook contains the code for augmenting the
 
 To add more data to the the data set, I applied some random transformations to the image including adjusting the brightness, applying a random rotation, cropping, and translating the image. The original version of my code applied some of these transformations (as well as some normalisation) using the TensorFlow library. It was my intention to perform these transformations on-the-fly. However, even running on a GPU instance the time it took to process each image was unreasonably long and it had a detrimental effect on my iteration time. Instead I resolved to pre-process each image and generate additional examples before feeding data into the model. This has the obvious advantage that everything is done only once but it adds a pre-processing dependency that could theoretically lead to bugs. I did some Googling around pre-processing images in python for this dataset and actually came across another student's solution. I used the functions he defined on the basis that they looked well put-together and I didn't think I could improve on them. I could have easily re-implemented them myself, but I'd prefer to leave them as is and credit the source.
 
-While augmenting the images I also took the opportunity to correct the imbalance in the datasets. As shown in the charts above, some classes are significantly more common than others. To correct this, I implemented a (somewhat hacky) means of selectively generating more images for under-represented classes than for the commonly occurring ones. The final class frequency distributions looks like this:
+While augmenting the images I also took the opportunity to correct the imbalance in the datasets. As shown in the charts above, some classes are significantly more common than others. To correct this, I implemented a (somewhat hacky) means of selectively generating more images for under-represented classes than for the commonly occurring ones. The final dataset included 450,000 examples. The final class frequency distributions looks like this:
 
 ![alt text][final_freqs]
 
 
 ####3. Describe, and identify where in your code, what your final model architecture looks like including model type, layers, layer sizes, connectivity, etc.) Consider including a diagram and/or table describing the final model.
 
-The code for my final model is located in the seventh cell of the ipython notebook. 
+The code for my final model is located in the sixth cell of the ipython notebook. 
 
-My final model consisted of the following layers:
+The model is based on the LeNet code supplied in the course with the addition of a third convolutional layer and some dropout layers to handle overfitting. I also did a lot of tinkering with the sizes of the convolutions and strides. I was interested in having the model examine smaller chunks of the image to potentially learn components better as the traffic sign dataset contains images that are distinguishable only by small pixel areas. I don't think that my final numbers are optimal but they are adequate. My final model consisted of the following layers:
 
 | Layer         		|     Description	        					| 
 |:---------------------:|:---------------------------------------------:| 
 | Input         		| 32x32x3 RGB image   							| 
-| Convolution 3x3     	| 1x1 stride, same padding, outputs 32x32x64 	|
+| Convolution 8x8     	| 2x2 stride, same padding, outputs 14x14x20 	|
 | RELU					|												|
-| Max pooling	      	| 2x2 stride,  outputs 16x16x64 				|
-| Convolution 3x3	    | etc.      									|
-| Fully connected		| etc.        									|
-| Softmax				| etc.        									|
-|						|												|
-|						|												|
- 
+| Max pooling	      	| 2x2 stride,  outputs 7x7x20 				|
+| Convolution 5x5     	| 1x1 stride, same padding, outputs 5x5x400 	|
+| RELU					|												|
+| Max pooling	      	| 2x2 stride,  outputs 2x2x400 				|
+| Convolution 1x1     	| 1x1 stride, same padding, outputs 4x4x20 	|
+| RELU					|												|
+| Max pooling	      	| 1x1 stride,  outputs 4x4x400 				|
+| Fully connected		| output 120        									|
+|	RELU				|												|
+|	Dropout					|	50%											|
+| Fully connected		| output 84        									|
+|	RELU				|												|
+|	Dropout					|	50%											|
+| Fully connected		| output 43        									|
 
 
 ####4. Describe how, and identify where in your code, you trained your model. The discussion can include the type of optimizer, the batch size, number of epochs and any hyperparameters such as learning rate.
 
-The code for training the model is located in the eigth cell of the ipython notebook. 
+The code for training the model is located in the seventh cell of the ipython notebook. 
 
-To train the model, I used an ....
+To train the model, I initially used an AdaGrad optimizer as I had read that it performed well on sparse data but as I began augmenting the dataset I noticed that Adam had better performance so I switched to that. In particuar, Adagrad often seemed to hit an accuracy level lesser than the Adam optimizer and then regress to a very low accuracy.
+
+I experimented with the batch size and larger batches seemed to perform better than smaller ones, although the difference wasn't that great above a certain threshold. The submitted version of the chose a batch size of 882, chosen because it was a denominator of the validation set and it was useful for debugging reasons!
+
+The number of epochs in the submitted notebook is 50. After about 30 epochs the rate of improvement decreases noticeably but there's still a significant amount of improvement to be had in the final 20 epochs. After 50, however, the improvements just seem to fluctuate around a maximum value.
+
+as for hyperparameters, the learning rate was modified by Adam. I did some experimenting with the initial value but got no improvement so I went with a recommended value of 0.001. I also did some tweaking of the initial data parameters, mu and sigma, but my changes didn't result in any desirable effects.
 
 ####5. Describe the approach taken for finding a solution. Include in the discussion the results on the training, validation and test sets and where in the code these were calculated. Your approach may have been an iterative process, in which case, outline the steps you took to get to the final solution and why you chose those steps. Perhaps your solution involved an already well known implementation or architecture. In this case, discuss why you think the architecture is suitable for the current problem.
 
-The code for calculating the accuracy of the model is located in the ninth cell of the Ipython notebook.
+The code for calculating the accuracy of the model is located in the seventh cell of the Ipython notebook.
 
 My final model results were:
-* training set accuracy of ?
-* validation set accuracy of ? 
-* test set accuracy of ?
+* validation set accuracy of 98.4%
+* test set accuracy of 90.8%
 
-If an iterative approach was chosen:
-* What was the first architecture that was tried and why was it chosen?
-* What were some problems with the initial architecture?
-* How was the architecture adjusted and why was it adjusted? Typical adjustments could include choosing a different model architecture, adding or taking away layers (pooling, dropout, convolution, etc), using an activation function or changing the activation function. One common justification for adjusting an architecture would be due to over fitting or under fitting. A high accuracy on the training set but low accuracy on the validation set indicates over fitting; a low accuracy on both sets indicates under fitting.
-* Which parameters were tuned? How were they adjusted and why?
-* What are some of the important design choices and why were they chosen? For example, why might a convolution layer work well with this problem? How might a dropout layer help with creating a successful model?
+Worth noting that I re-ran the test set accuracy a few times (after all model details were finalised!) as part of re-running the ipython notebook after clean-up. Due to the large size of my training set I ran into memory problems which I wasn't able to resolve (and which I believe were due to transient conditions on my development machine). As a result, the submitted version included 50% fewer examples than an earlier version which achieved a test set accuracy of 92.5%. This is a good indication that a larger training set would improve the accuracy of the model.
 
-If a well known architecture was chosen:
-* What architecture was chosen?
-* Why did you believe it would be relevant to the traffic sign application?
-* How does the final model's accuracy on the training, validation and test set provide evidence that the model is working well?
+
+As stated previously, the architecture was initially based on LeNet with some modifications as described above. The iterative design process was heavily impacted by a sudden drop in accuracy which took 3 days to resolve; it turns out I had moved to a new machine and checked out the data from Udacity. The dataset had been substantially modified and I had received any notifications (I have since heard it was mentioned in slack, which I don't consider to be an adequate notification). This caused my accuracy to fluctuate from 80%-90%. I tore apart the model and rebuilt everything then started experimenting heavily with adding and removing both fully connected and convolutional layers. Nothing seemed to improve things and after several days I realised that the issue was the modified dataset. Having spent so much time and now concerned that I won't get all the projects submitted by the deadline, I ended up tweaking the model that I then had to get it to a reasonable state. While this was an iterative process, I don't think it was good development! If Udacity would like me to try again I would request an additional weekend of development time to do it right. I would also politely request that significant changes to the dataset should be communicated more thoroughly and that the course materials should be updated (I followed the LeNet video line by line with my code and that's how I discovered that something was fishy about the dataset because David got 96% accuracy and I got < 90% with the exact same code).
  
 
 ###Test a Model on New Images
@@ -160,8 +165,8 @@ If a well known architecture was chosen:
 
 Here are five German traffic signs that I found on the web:
 
-![alt text][image4] ![alt text][image5] ![alt text][image6] 
-![alt text][image7] ![alt text][image8]
+![alt text][german1] ![alt text][german2] ![alt text][german3] 
+![alt text][german4] ![alt text][german5]
 
 The first image might be difficult to classify because ...
 
