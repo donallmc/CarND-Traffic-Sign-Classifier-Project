@@ -176,21 +176,25 @@ Here are five German traffic signs that I found on the web:
 ![alt text][german1] ![alt text][german2] ![alt text][german3] 
 ![alt text][german4] ![alt text][german5]
 
-The first image might be difficult to classify because ...
+Here are three additional German traffic signs that do not map to one of the classes in the training data:
+
+![alt text][german6] ![alt text][german6] ![alt text][german8] 
+
+The first and fifth images might be difficult to classify because they are speeding signs. All speeding signs look reasonably similar and the images are small enough that the numbers are blurred, making it difficult to distinguish them. In addition, the first sign is smaller (in terms of pixels) than the fifth one so the problems are exacerbated. 
 
 ####2. Discuss the model's predictions on these new traffic signs and compare the results to predicting on the test set. Identify where in your code predictions were made. At a minimum, discuss what the predictions were, the accuracy on these new predictions, and compare the accuracy to the accuracy on the test set (OPTIONAL: Discuss the results in more detail as described in the "Stand Out Suggestions" part of the rubric).
 
-The code for making predictions on my final model is located in the tenth cell of the Ipython notebook.
+The code for making predictions on my final model is located in the ninth cell of the Ipython notebook.
 
 Here are the results of the prediction:
 
-| Image			        |     Prediction	        					| 
+| Image			        |     Prediction	        					|
 |:---------------------:|:---------------------------------------------:| 
-| Stop Sign      		| Stop sign   									| 
-| U-turn     			| U-turn 										|
+| Speed 120      		| Speed 50   									| 
+| No Vehicles     			| No Vehicles 										|
 | Yield					| Yield											|
-| 100 km/h	      		| Bumpy Road					 				|
-| Slippery Road			| Slippery Road      							|
+| No Passing	      		| No Passing					 				|
+| Speed 30			| Speed 30      							|
 
 
 The model was able to correctly guess 4 of the 5 traffic signs, which gives an accuracy of 80%. This compares favorably to the accuracy on the test set of ...
