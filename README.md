@@ -16,6 +16,7 @@ The goals / steps of this project are the following:
 [test_freqs]: ./images/test_freqs.png "frequencies"
 [training_freqs]: ./images/training_freqs.png "frequencies"
 [validation_freqs]: ./images/validation_freqs.png "frequencies"
+[final_freqs]: ./images/final_freqs.png "frequencies"
 [no_passing]: ./images/no_passing.png "no passing"
 [stop]: ./images/stop.png "stop"
 [speed_80]: ./images/speed_80.png "speed_80"
@@ -67,14 +68,14 @@ Here is an exploratory visualization of the data set. Here are image frequencies
 
 Here are some examples of randomly chosen images for 3 classes:
 
-**5: Speed limit (80km/h)**
 ![alt text][speed_80]
+**5: Speed limit (80km/h)**
 
-**9: No passing**
 ![alt text][no_passing]
+**9: No passing**
 
-**14: Stop**
 ![alt text][stop]
+**14: Stop**
 
 Samples for the full 43 classes can be seen in the python notebook.
 
@@ -82,31 +83,27 @@ Samples for the full 43 classes can be seen in the python notebook.
 
 ####1. Describe how, and identify where in your code, you preprocessed the image data. What tecniques were chosen and why did you choose these techniques? Consider including images showing the output of each preprocessing technique. Pre-processing refers to techniques such as converting to grayscale, normalization, etc.
 
-The code for this step is contained in the fourth code cell of the IPython notebook.
+The code for this step is contained in the fourth and fifth code cells of the IPython notebook.
 
-As a first step, I decided to convert the images to grayscale because ...
+As a first step, I decided to convert the images to grayscale to simplify things by ignoring colour and having smaller feature sets to process. I also applied a histogram normalisation to handle the pronounced differences in brightness in the sample dataset. However, after some testing it became apparent that this kind of normalisation was not performing better than the colour dataset so I dropped it.
 
-Here is an example of a traffic sign image before and after grayscaling.
+The only normalisation that is applied to the colour images is a simple normalisation to constrain all values to ```-1 <= x <= 1``` and I achieved satisfactory results with this approach. 
 
-![alt text][image2]
-
-As a last step, I normalized the image data because ...
+There is also some data augmentation code in this cell, which I will describe in the next section.
 
 ####2. Describe how, and identify where in your code, you set up training, validation and testing data. How much data was in each set? Explain what techniques were used to split the data into these sets. (OPTIONAL: As described in the "Stand Out Suggestions" part of the rubric, if you generated additional data for training, describe why you decided to generate additional data, how you generated the data, identify where in your code, and provide example images of the additional data)
 
-The code for splitting the data into training and validation sets is contained in the fifth code cell of the IPython notebook.  
+The code for splitting the data into training and validation sets is contained in the first code cell of the IPython notebook along with a snarky comment about how the dataset changed and caused me to lose a lot of time! :)
 
-To cross validate my model, I randomly split the training data into a training set and validation set. I did this by ...
+To cross validate my model, I randomly split the training data into a training set and validation set. I did this by using the appropriate SKLearn function.
 
-My final training set had X number of images. My validation set and test set had Y and Z number of images.
+The fifth code cell of the IPython notebook contains the code for augmenting the data set. I decided to generate additional data because the provided data set is relatively small and this kind of deep learning benefits from much larger sets. In addition, the images provided vary significantly in terms of lighting conditions, image position, obscured components, etc. An augmented dataset would increase the number of examples seen of each permutation of these parameters, leading to a more robust classification. 
 
-The sixth code cell of the IPython notebook contains the code for augmenting the data set. I decided to generate additional data because ... To add more data to the the data set, I used the following techniques because ... 
+To add more data to the the data set, I applied some random transformations to the image including adjusting the brightness, applying a random rotation, cropping, and translating the image. The original version of my code applied some of these transformations (as well as some normalisation) using the TensorFlow library. It was my intention to perform these transformations on-the-fly. However, even running on a GPU instance the time it took to process each image was unreasonably long and it had a detrimental effect on my iteration time. Instead I resolved to pre-process each image and generate additional examples before feeding data into the model. This has the obvious advantage that everything is done only once but it adds a pre-processing dependency that could theoretically lead to bugs. I did some Googling around pre-processing images in python for this dataset and actually came across another student's solution. I used the functions he defined on the basis that they looked well put-together and I didn't think I could improve on them. I could have easily re-implemented them myself, but I'd prefer to leave them as is and credit the source.
 
-Here is an example of an original image and an augmented image:
+While augmenting the images I also took the opportunity to correct the imbalance in the datasets. As shown in the charts above, some classes are significantly more common than others. To correct this, I implemented a (somewhat hacky) means of selectively generating more images for under-represented classes than for the commonly occurring ones. The final class frequency distributions looks like this:
 
-![alt text][image3]
-
-The difference between the original data set and the augmented data set is the following ... 
+![alt text][final_freqs]
 
 
 ####3. Describe, and identify where in your code, what your final model architecture looks like including model type, layers, layer sizes, connectivity, etc.) Consider including a diagram and/or table describing the final model.
