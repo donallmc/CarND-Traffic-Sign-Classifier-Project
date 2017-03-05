@@ -217,6 +217,7 @@ Image 0. Correct value: Speed limit (120km/h)
 
 The other 4 signs are correctly classified. Interestingly, the "no vehicles", "yield" and "no passing" signs have extremely high confidence. This is presumably because they have distinctive features like a different shape, or a horizontal line through the sign, or an empty white circle. The 30 speed limit sign is correctly classified but not quite as confidently as the others, showing that the model does indeed struggle with speed limits.
 
+Overall, the 5 new signs have a classification accuracy of 80%, compared to the test set accuracy of 90.8%. The probabaility distribution for the incorrectly classified sign suggests there might be some overfitting, particularly around the various classes which include speed limits.
 
 
 |Image 1. Correct value: No vehicles
