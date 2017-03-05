@@ -178,7 +178,7 @@ Here are five German traffic signs that I found on the web:
 
 Here are three additional German traffic signs that do not map to one of the classes in the training data:
 
-![alt text][german6] ![alt text][german6] ![alt text][german8] 
+![alt text][german6] ![alt text][german7] ![alt text][german8] 
 
 The first and fifth images might be difficult to classify because they are speeding signs. All speeding signs look reasonably similar and the images are small enough that the numbers are blurred, making it difficult to distinguish them. In addition, the first sign is smaller (in terms of pixels) than the fifth one so the problems are exacerbated. 
 
@@ -197,21 +197,69 @@ Here are the results of the prediction:
 | Speed 30			| Speed 30      							|
 
 
-The model was able to correctly guess 4 of the 5 traffic signs, which gives an accuracy of 80%. This compares favorably to the accuracy on the test set of ...
+The model was able to correctly guess 4 of the 5 traffic signs, which gives an accuracy of 80%. The pass that I mentioned previously with the larger training dataset correctly classified all 5, supporting the conclusion that a larger training set improves performance.
 
 ####3. Describe how certain the model is when predicting on each of the five new images by looking at the softmax probabilities for each prediction and identify where in your code softmax probabilities were outputted. Provide the top 5 softmax probabilities for each image along with the sign type of each probability. (OPTIONAL: as described in the "Stand Out Suggestions" part of the rubric, visualizations can also be provided such as bar charts)
 
-The code for making predictions on my final model is located in the 11th cell of the Ipython notebook.
+The code for making predictions on my final model is located in the tenth cell of the Ipython notebook.
 
-For the first image, the model is relatively sure that this is a stop sign (probability of 0.6), and the image does contain a stop sign. The top five soft max probabilities were
+For the first image, the model incorrectly classifies it as "speed limit (50km/h)". As evidenced by the top 5 scores, the model has difficulties distinguishing between different speed limits signs, as expected. I believe this is solvable with more training data.
 
-| Probability         	|     Prediction	        					| 
-|:---------------------:|:---------------------------------------------:| 
-| .60         			| Stop sign   									| 
-| .20     				| U-turn 										|
-| .05					| Yield											|
-| .04	      			| Bumpy Road					 				|
-| .01				    | Slippery Road      							|
+Image 0. Correct value: Speed limit (120km/h)
+Speed limit (50km/h): 0.487
+Speed limit (30km/h): 0.274
+Speed limit (100km/h): 0.071
+Speed limit (70km/h): 0.054
+Speed limit (80km/h): 0.024
 
+The other 4 signs are correctly classified. Interestingly, the "no vehicles", "yield" and "no passing" signs have extremely high confidence. This is presumably because they have distinctive features like a different shape, or a horizontal line through the sign, or an empty white circle. The 30 speed limit sign is correctly classified but not quite as confidently as the others, showing that the model does indeed struggle with speed limits.
 
-For the second image ... 
+Image 1. Correct value: No vehicles
+No vehicles: 1.000
+Bumpy road: 0.000
+Bicycles crossing: 0.000
+Yield: 0.000
+Speed limit (60km/h): 0.000
+
+Image 2. Correct value: Yield
+Yield: 1.000
+Speed limit (20km/h): 0.000
+Speed limit (30km/h): 0.000
+Speed limit (50km/h): 0.000
+Speed limit (60km/h): 0.000
+
+Image 3. Correct value: No passing
+No passing: 1.000
+Speed limit (20km/h): 0.000
+Speed limit (30km/h): 0.000
+Speed limit (50km/h): 0.000
+Speed limit (60km/h): 0.000
+
+Image 4. Correct value: Speed limit (30km/h)
+Speed limit (30km/h): 0.968
+Speed limit (50km/h): 0.024
+Speed limit (70km/h): 0.007
+Speed limit (100km/h): 0.000
+No vehicles: 0.000
+
+Image 5. Correct value: unseen
+Keep right: 0.567
+Turn left ahead: 0.145
+Ahead only: 0.085
+Right-of-way at the next intersection: 0.044
+Road work: 0.030
+-----
+Image 6. Correct value: unseen
+End of speed limit (80km/h): 1.000
+Dangerous curve to the right: 0.000
+Slippery road: 0.000
+Children crossing: 0.000
+Speed limit (60km/h): 0.000
+-----
+Image 7. Correct value: unseen
+Stop: 0.998
+Speed limit (30km/h): 0.001
+No vehicles: 0.001
+Speed limit (50km/h): 0.000
+No passing: 0.000
+-----
